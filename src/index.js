@@ -3,14 +3,6 @@ const ctx = canvas.getContext('2d');
 const ballRadius = 10;
 const paddleHeight = 10;
 const paddleWidth = 75;
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-let dx = 2;
-let dy = 2;
-let paddleX = (canvas.width - paddleWidth) / 2;
-let rightPressed = false;
-let leftPressed = false;
-
 const brickRowCount = 3;
 const brickColumnCount = 5;
 const brickWidth = 75;
@@ -19,6 +11,15 @@ const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 const bricks = [];
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = 2;
+let paddleX = (canvas.width - paddleWidth) / 2;
+let rightPressed = false;
+let leftPressed = false;
+let score = 0;
+
 for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
@@ -40,10 +41,6 @@ function drawBricks() {
         ctx.fill();
         ctx.closePath();
       }
-      // const brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
-      // const brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
-      // bricks[c][r].x = brickX;
-      // bricks[c][r].y = brickY;
     }
   }
 }
@@ -72,17 +69,30 @@ function collisionDetection() {
         if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
           dy = -dy;
           b.status = 0;
+          score += 1;
+          if (score === brickRowCount * brickColumnCount) {
+            const message = 'You win!';
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#0095DD';
+            ctx.fillText(`${message}`, 140, 40);
+          }
         }
       }
     }
   }
 }
 
+function drawScore() {
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#0095DD';
+  ctx.fillText(`Score ${score}`, 8, 20);
+}
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBricks();
   drawBall();
   drawPaddle();
+  drawScore();
   collisionDetection();
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
