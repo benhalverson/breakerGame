@@ -19,22 +19,23 @@ const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 const bricks = [];
-for (let column = 0; column < brickColumnCount; column += 1) {
-  bricks[column] = [];
-  for (let row = 0; row < brickRowCount; row += 1) {
-    bricks[column][row] = { x: 0, y: 0 };
+for (let c = 0; c < brickColumnCount; c += 1) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r += 1) {
+    bricks[c][r] = { x: 0, y: 0 };
+    console.log(bricks);
   }
 }
 
 function drawBricks() {
-  for (let column = 0; column < brickColumnCount; column += 1) {
-    for (let row = 0; row < brickRowCount; row += 1) {
-      const brickX = (column * (brickWidth + brickPadding)) + brickOffsetLeft;
-      const brickY = (row * (brickHeight + brickPadding)) + brickOffsetTop;
-      bricks[column][row].x = brickX;
-      bricks[column][row].y = brickY;
+  for (let c = 0; c < brickColumnCount; c += 1) {
+    for (let r = 0; r < brickRowCount; r += 1) {
+      const brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
+      const brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
+      bricks[c][r].x = brickX;
+      bricks[c][r].y = brickY;
       ctx.beginPath();
-      ctx.rect(0, 0, brickWidth, brickHeight);
+      ctx.rect(brickX, brickY, brickWidth, brickHeight);
       ctx.fillStyle = '#0095DD';
       ctx.fill();
       ctx.closePath();
@@ -73,7 +74,7 @@ function draw() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      document.location.reload();
+      // document.location.reload();
     }
   }
 
