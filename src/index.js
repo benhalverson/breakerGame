@@ -114,7 +114,6 @@ function draw() {
     } else {
       lives -= 1;
       if (!lives) {
-        console.log('game over');
         document.location.reload();
       } else {
         x = canvas.width / 2;
@@ -166,4 +165,4 @@ function mouseMoveHandler(e) {
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseMoveHandler, false);
-draw()
+draw();
