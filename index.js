@@ -18,6 +18,29 @@ const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
+const bricks = [];
+for (let column = 0; column < brickColumnCount; column += 1) {
+  bricks[column] = [];
+  for (let row = 0; row < brickRowCount; row += 1) {
+    bricks[column][row] = { x: 0, y: 0 };
+  }
+}
+
+function drawBricks() {
+  for (let column = 0; column < brickColumnCount; column += 1) {
+    for (let row = 0; row < brickRowCount; row += 1) {
+      const brickX = (column * (brickWidth + brickPadding)) + brickOffsetLeft;
+      const brickY = (row * (brickHeight + brickPadding)) + brickOffsetTop;
+      bricks[column][row].x = brickX;
+      bricks[column][row].y = brickY;
+      ctx.beginPath();
+      ctx.rect(0, 0, brickWidth, brickHeight);
+      ctx.fillStyle = '#0095DD';
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+}
 
 function drawBall() {
   ctx.beginPath();
@@ -37,26 +60,29 @@ function drawPaddle() {
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBricks();
   drawBall();
   drawPaddle();
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
   }
+
   if (y + dy < ballRadius) {
     dy = -dy;
   } else if (y + dy > canvas.height - ballRadius) {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      console.log('game over');
       document.location.reload();
     }
   }
+
   if (rightPressed && paddleX < canvas.width - paddleWidth) {
     paddleX += 7;
   } else if (leftPressed && paddleX > 0) {
     paddleX -= 7;
   }
+
   x += dx;
   y += dy;
 }
@@ -65,20 +91,20 @@ function keyDownHandler(e) {
   if (e.keyCode === 39) {
     rightPressed = true;
   }
+
   if (e.keyCode === 37) {
     leftPressed = true;
   }
-  // console.log(`rightPressed ${rightPressed}`);
 }
 
 function keyUpHandler(e) {
   if (e.keyCode === 39) {
     rightPressed = false;
   }
+
   if (e.keyCode === 37) {
     leftPressed = false;
   }
-  // console.log(`leftPressed ${leftPressed}`);
 }
 
 document.addEventListener('keydown', keyDownHandler, false);
